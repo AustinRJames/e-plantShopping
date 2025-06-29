@@ -6,8 +6,12 @@ import { useDispatch } from 'react-redux';
 function ProductList({ onHomeClick }) {
     const [showCart, setShowCart] = useState(false);
     const [showPlants, setShowPlants] = useState(false); // State to control the visibility of the About Us page
-    const [addedToCart, setAddedToCart] = useState({});
+    const [addedToCart, setAddedToCart] = useState("Add To Cart");
     const dispatch = useDispatch();
+
+    const calculateTotalQuantity = () => {
+ return CartItems ? CartItems.reduce((total, item) => total + item.quantity, 0) : 0;
+  };
 
     const plantsArray = [
         {
@@ -263,6 +267,7 @@ function ProductList({ onHomeClick }) {
             ...prevState,
             [product.name]: true,
         }))
+        setButtonText('test')
     }
 
     return (
@@ -307,8 +312,10 @@ function ProductList({ onHomeClick }) {
                                     <button
                                         className="product-button"
                                         onClick={() => handleAddToCart(plant)}
+                                        disabled={addedToCart[plant.name]}
+
                                     >
-                                        Add To Cart
+                                        {addedToCart[plant.name] ? "Added to Cart" : "Add To Cart"}
                                     </button>
                                 </div>                                
                             ))}
